@@ -1,0 +1,14 @@
+## build files
+_cache
+_site
+
+## ghc generated files
+*.exe
+*.hi
+*.o
+
+## babel-preset-es2015 won't work with a global install
+node_modules
+
+.stack-work
+

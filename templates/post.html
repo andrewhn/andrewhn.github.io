@@ -1,0 +1,25 @@
+$if(reqs)$
+  $reqs$
+$endif$
+<article class="post">
+  <header class="header">
+    <h1 class="title">
+      $title$
+    </h1>
+  </header>
+
+  <footer class="footer">
+    Posted
+    $if(tags)$
+        under $tags$
+    $endif$
+    on $date$
+    $if(author)$
+        by $author$
+    $endif$
+  </footer>
+
+  <div class="full-content">
+    $body$
+  </div>
+</article>

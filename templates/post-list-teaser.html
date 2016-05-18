@@ -1,0 +1,29 @@
+$for(posts)$
+
+  <article class="teaser">
+
+    <header class="header">
+      <h1 class="title">
+        <a href="$url$">$title$</a>
+      </h1>
+    </header>
+
+    <footer class="footer">
+      $date$
+    </footer>
+
+    <div class="content">
+      $if(teaser)$
+        $teaser$
+      $else$
+        $body$
+      $endif$
+    </div>
+
+    <div class="read-more">
+      <a href="$url$">Read more →</a>
+    </div>
+
+  </article>
+
+$endfor$
