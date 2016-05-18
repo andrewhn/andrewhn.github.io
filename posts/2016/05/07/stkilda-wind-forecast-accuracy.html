@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <title>Andrew Newnham - BOM wind forecast accuracy: St Kilda RMYS edition</title>
+      <link rel="stylesheet" type="text/css" href="../../../../css/fonts.css" />
+      <link rel="stylesheet" type="text/css" href="../../../../css/default.css" />
+
+      <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-75336631-1', 'auto');
+        ga('send', 'pageview');
+      </script>
+
+  </head>
+  <body>
+
+    <header class="site-header" role="banner">
+      <hgroup>
+        <h1 class="site-name">
+          <a href="../../../../" rel="home">Andrew Newnham</a>
+        </h1>
+        <h2 class="site-description">
+          Not very good at taglines
+        </h2>
+      </hgroup>
+
+      <nav id="navigation" class="main-navigation">
+        <ul id="nav" class="nav-list">
+          <li class="nav-item">
+            <a href="../../../../about.html">About</a>
+          </li>
+          <li class="nav-item">
+            <a href="../../../../archive.html">Archive</a>
+          </li>
+          <li class="nav-item">
+            <a href="../../../../other.html">Other</a>
+          </li>
+        </ul>
+      </nav>
+
+    </header>
+
+
+    <div id="main-content">
+
+      <div id="content">
+        
+  
+
+<article class="post">
+  <header class="header">
+    <h1 class="title">
+      BOM wind forecast accuracy: St Kilda RMYS edition
+    </h1>
+  </header>
+
+  <footer class="footer">
+    Posted
+    
+        under kites
+    
+    on May  7, 2016
+    
+  </footer>
+
+  <div class="full-content">
+    <p>Certainly the best and worst aspects of kiting (and perhaps elemental sports more generally) are the reliance on mother nature. There’s nothing better than a sunny day blowing a smooth 23 knots all afternoon, but there’s also nothing worse than driving down to Rosebud on the basis of a blistering forecast all for nothing. The wind-sport community uses forecasts to minimise the risk of gearing up and traveling for no reason. These forecasts can come from a number of different websites, but the sources are generally from one of two places.</p>
+<!--more-->
+<p>The first is the US National Oceanic and Atmospheric Administration’s (NOAA) global forecasting system (GFS), for which global gridded forecasts are free to download. Sites that show these forecasts are <a href="http://earth.nullschool.net/#current/wind/surface/level/orthographic=-223.66,-26.14,1105">earth.nullschool.net</a> and <a href="http://windyty.com">windyty</a>, which are nice to look at but don’t capture localised effects, so not great if you’re deciding whether to go for a kite tomorrow.</p>
+<p>The second source is one of several Bureau of Meteorology (BOM) forecast products, the best (to my knowledge) of which is publically available as <a href="http://www.bom.gov.au/australia/meteye/">MetEye</a>. MetEye provides gridded forecasts of wind speed and direction at three hour intervals, seven days ahead, via map-based and textual interfaces. The map-based MetEye user interface is pictured below and gives a good feeling for direction and speed in the area at a relatively granular resolution.</p>
+<p><a href="../../../../images/bom-meteye.png"><img src="../../../../images/bom-meteye.png" alt="image" /></a></p>
+<p>I generally trust the forecasts produce by MetEye - especially within a couple of days - but there are certainly occasions where wind is forecast and none arrives, or wind is not forecast and it does arrive. My feeling is that around 90% of the time in summer, the forecasts would be a sufficient indicator of kitable conditions, although perhaps this is fading affect bias in action. So, I have the data – just how good are the MetEye forecasts?</p>
+<p>In assessing forecast accuracy, I take three properties into account: wind speed, wind direction, and time since forecast. Each observation (meaning measured value) has a number of forecast values associated with it: those from 7 days prior, those from 6 days prior, and so on. The graphic below demonstrates this - the coloured arrows are observations, the black arrows are forecasts. If you fix your eye on a single point in time (the blue circle), you’ll notice the forecasts change as the forecast issue time approaches the observation time.</p>
+<p><a href="../../../../images/forecast-performance-eg.gif"><img src="../../../../images/forecast-performance-eg.gif" alt="image" /></a></p>
+<p>A consequence of the three-hour forecast granularity is that one forecast point represents 18 different of observations, which may have a lot of variability. In three hours, winds can change a lot, and so we should take this in to account when assessing forecast accuracy metrics.</p>
+<h1 id="the-data">The data</h1>
+<p>To assess these forecasts, I’m using a years worth of observation and forecast data spanning May 2015-May 2016. The observation data is from the St Kilda RMYS station, and the forecast data from the respective forecast grid cell. In total, the dataset has:</p>
+<ul>
+<li>1,464 forecasts, equating to four per day; each forecast has a wind speed and direction data point out seven days in three hour intervals (76,100 forecast data points in total).</li>
+<li>52,572 observations, equating to six per hour or one every 10 minutes.</li>
+</ul>
+<p>Observations are more granular than the forecasts (10 minute vs three hourly), so I needed a way to match them. I lieu of any actual documentation, I have assumed that observations are associated with the forecasts closest to them; in practice this means a forecast data point is associated with observations spanning 1.5 hours before and after.</p>
+<h1 id="exploring-the-observations">Exploring the observations</h1>
+<p>Of course, a single year of data will be prone to seasonal effects; many have condemned the 2015-16 summer a terrible summer for wind sports in Victoria. However, while the following may not be representative of every year, we can still see some interesting patterns emerging.</p>
+<p>The following chart shows distributions of wind speed by hour and month, and will have no surprises for wind-sport enthusiasts in Melbourne or residents of St Kilda. In the warmer months, we get reliable sea breezes which build throughout the morning, peak in the afternoon, and drop off in the evening. In the cooler months, there is a much weaker correlation between wind speed and time of day, but greater variability in wind speed at any given hour.</p>
+<p><a href="../../../../images/stk-mth-hr-boxplot.png"><img src="../../../../images/stk-mth-hr-boxplot.png" alt="image" /></a></p>
+<p>Including direction in our analysis will also hold no surprises for Melbourne wind-sport enthusiasts. The roses below show the count of observations by direction of origin, and are coloured in 10 knot bands by speed. Southerlies from the sea breezes dominate in the warmer months, with the strongest winds most present in the hottest month (February). Northerlies dominate the cooler months, particularly in autumn, as we are experiencing right now.</p>
+<p><a href="../../../../images/stk-mth-dir-rose.png"><img src="../../../../images/stk-mth-dir-rose.png" alt="image" /></a></p>
+<h1 id="assessing-the-forecasts">Assessing the forecasts</h1>
+<p>There are a</p>
+<p>Error density plots:</p>
+<ul>
+<li>Scratching the surface here</li>
+</ul>
+<p><a href="../../../../images/forecast-speed-error-density.png"><img src="../../../../images/forecast-speed-error-density.png" alt="image" /></a></p>
+<p>More text</p>
+<p><a href="../../../../images/stk-mth-fcint-boxplot.png"><img src="../../../../images/stk-mth-fcint-boxplot.png" alt="image" /></a></p>
+<p>More text. Todo - lim - do we want to lim based on actuals (dir &amp; speed) or forecast (dir &amp; speed)?</p>
+<p><a href="../../../../images/stk-mth-fcint-lim-boxplot.png"><img src="../../../../images/stk-mth-fcint-lim-boxplot.png" alt="image" /></a></p>
+<p>More text</p>
+  </div>
+</article>
+
+      </div>
+
+      <div id="footer"><a href="http://github.com/andrewhn/andrewhn">view source</a></div>
+
+    </div>
+
+  </body>
+</html>

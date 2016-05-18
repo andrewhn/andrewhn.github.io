@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <title>Andrew Newnham - ANN training visualisation with d3</title>
+      <link rel="stylesheet" type="text/css" href="../../../../css/fonts.css" />
+      <link rel="stylesheet" type="text/css" href="../../../../css/default.css" />
+
+      <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-75336631-1', 'auto');
+        ga('send', 'pageview');
+      </script>
+
+  </head>
+  <body>
+
+    <header class="site-header" role="banner">
+      <hgroup>
+        <h1 class="site-name">
+          <a href="../../../../" rel="home">Andrew Newnham</a>
+        </h1>
+        <h2 class="site-description">
+          Not very good at taglines
+        </h2>
+      </hgroup>
+
+      <nav id="navigation" class="main-navigation">
+        <ul id="nav" class="nav-list">
+          <li class="nav-item">
+            <a href="../../../../about.html">About</a>
+          </li>
+          <li class="nav-item">
+            <a href="../../../../archive.html">Archive</a>
+          </li>
+          <li class="nav-item">
+            <a href="../../../../other.html">Other</a>
+          </li>
+        </ul>
+      </nav>
+
+    </header>
+
+
+    <div id="main-content">
+
+      <div id="content">
+        
+  <script type="text/javascript" src="../../../../js/vendor/d3.min.js"></script><script type="text/javascript" src="../../../../js/vendor/jquery-1.12.3.min.js"></script><script type="text/javascript" src="../../../../js/ann-viz.js"></script>
+
+<article class="post">
+  <header class="header">
+    <h1 class="title">
+      ANN training visualisation with d3
+    </h1>
+  </header>
+
+  <footer class="footer">
+    Posted
+    
+        under computers
+    
+    on April 21, 2016
+    
+  </footer>
+
+  <div class="full-content">
+    <p>One weekend last year I decided an artificial neural network (ANN) training visualisation would be a fun thing to do with d3. It took a little longer than I thought, and <a href="https://github.com/andrewhn/andrewhn.github.io/tree/src/js/ann-viz.es6">the code</a> could do with a clean-up, but it does what I was hoping it would.</p>
+<!--more-->
+<p>The general sequence, as depicted, is:</p>
+<ul>
+<li>inputs (left) with an associated dependent value (right) are fed into the first layer of the ANN</li>
+<li>the ANN’s layers fire (the black dots moving along the synapses) in sequence, with the size of the dot representing the absolute value of the signal (a combination of the synapse weight and the input value)</li>
+<li>the sigmoid functions determine the size of the signal from the previous layers (the red dots denote the output from the sigmoid functions)</li>
+<li>the difference between the answer and the model’s guess (error) is calculated</li>
+<li>the error-weighted derivatives are propagated backwards to adjust the synapse weightings (the black fades)</li>
+<li>training inputs/outputs are cycled</li>
+</ul>
+<p>The <code>Skip 500</code> button below runs 500 training iterations instantly. A few thousand iterations (i.e. a couple of clicks) should be enough to have the ANN estimating the output with resonable accuracy.</p>
+<button onclick="skip500()">Skip 500</button>
+<div id="ann-viz"></div>
+<style>
+  .path {
+      stroke: steelblue;
+      stroke-width: 2;
+      fill: none;
+  }
+  .axis path,
+  .axis line {
+      fill: none;
+      stroke: grey;
+      stroke-width: 1;
+      opacity: 0.3;
+      shape-rendering: crispEdges;
+  }
+  .line {
+      stroke: black;
+      stroke-width: 1;
+      fill: none;
+  }
+</style>
+  </div>
+</article>
+
+      </div>
+
+      <div id="footer"><a href="http://github.com/andrewhn/andrewhn">view source</a></div>
+
+    </div>
+
+  </body>
+</html>

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <title>Andrew Newnham - Olympics dataset</title>
+      <link rel="stylesheet" type="text/css" href="../../../../css/fonts.css" />
+      <link rel="stylesheet" type="text/css" href="../../../../css/default.css" />
+
+      <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-75336631-1', 'auto');
+        ga('send', 'pageview');
+      </script>
+
+  </head>
+  <body>
+
+    <header class="site-header" role="banner">
+      <hgroup>
+        <h1 class="site-name">
+          <a href="../../../../" rel="home">Andrew Newnham</a>
+        </h1>
+        <h2 class="site-description">
+          Not very good at taglines
+        </h2>
+      </hgroup>
+
+      <nav id="navigation" class="main-navigation">
+        <ul id="nav" class="nav-list">
+          <li class="nav-item">
+            <a href="../../../../about.html">About</a>
+          </li>
+          <li class="nav-item">
+            <a href="../../../../archive.html">Archive</a>
+          </li>
+          <li class="nav-item">
+            <a href="../../../../other.html">Other</a>
+          </li>
+        </ul>
+      </nav>
+
+    </header>
+
+
+    <div id="main-content">
+
+      <div id="content">
+        
+  
+
+<article class="post">
+  <header class="header">
+    <h1 class="title">
+      Olympics dataset
+    </h1>
+  </header>
+
+  <footer class="footer">
+    Posted
+    
+        under computers, data
+    
+    on August 11, 2012
+    
+  </footer>
+
+  <div class="full-content">
+    <p>Reading Stephen King’s blog post on comments about Australia’s Olympic performance inspired me to have a look at some Olympics data. Surprisingly, I couldn’t find an easily accessible database of medals by event, country, and year. I did find a website that contains all this information, so I grabbed it from there with a scraper in Python (downloadable below).</p>
+<!--more-->
+<p>The raw data isn’t exactly how I wanted – there are multiple rows (medals listed) for team events. For example:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>df[<span class="dv">10</span>:<span class="dv">16</span>, ]
+<span class="co">#   year country      sport              event                    name score  medal</span>
+<span class="co">#10 1896  Greece Gymnastics              Rings     Ioannis Mitropoulos         GOLD</span>
+<span class="co">#11 1896  Greece Gymnastics      Rope climbing Nicolaos Andriakopoulos  23.4   GOLD</span>
+<span class="co">#12 1896  Greece Gymnastics Parallel Bars Team          Thomas Xenakis       SILVER</span>
+<span class="co">#13 1896  Greece Gymnastics Parallel Bars Team Nicolaos Andriakopoulos       SILVER</span>
+<span class="co">#14 1896  Greece Gymnastics Parallel Bars Team      Philippos Karvelas       BRONZE</span>
+<span class="co">#15 1896  Greece Gymnastics Parallel Bars Team      Ioannis Khrisaphos       BRONZE</span>
+<span class="co">#16 1896  Greece   Shooting         Pistol 25m       Ioannis Fragoudis   344   GOLD</span></code></pre></div>
+<p>I wanted to have one row per medal so medal tallies could be calculated from this table. The <code>plyr</code> package in R has a nice function <code>ddply</code> which finds rows with common elements. I wanted to isolate rows with everything in common except for the name. With these subsets, I wanted to compress them into one row with the names concatenated. This is done as follows:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">df.clean &lt;-<span class="st"> </span><span class="kw">ddply</span>(df, <span class="kw">c</span>(<span class="st">&quot;year&quot;</span>, <span class="st">&quot;country&quot;</span>, <span class="st">&quot;sport&quot;</span>, <span class="st">&quot;event&quot;</span>, <span class="st">&quot;score&quot;</span>, <span class="st">&quot;medal&quot;</span>),
+        function(subset) <span class="kw">paste</span>(subset[, <span class="st">&quot;name&quot;</span>], <span class="dt">collapse=</span><span class="st">&quot;,&quot;</span>))
+
+df.clean[<span class="dv">10</span>:<span class="dv">14</span>, ]
+<span class="co">#   year country      sport              event score  medal</span>
+<span class="co">#10 1896  Greece Gymnastics              Rings         GOLD</span>
+<span class="co">#11 1896  Greece Gymnastics      Rope climbing  23.4   GOLD</span>
+<span class="co">#12 1896  Greece Gymnastics Parallel Bars Team       SILVER</span>
+<span class="co">#13 1896  Greece Gymnastics Parallel Bars Team       BRONZE</span>
+<span class="co">#14 1896  Greece   Shooting         Pistol 25m   344   GOLD</span>
+<span class="co">#                                                                            names</span>
+<span class="co">#10                                                            Ioannis Mitropoulos</span>
+<span class="co">#11                                                        Nicolaos Andriakopoulos</span>
+<span class="co">#12 Thomas Xenakis,Nicolaos Andriakopoulos,Petros Persakis,Sotirios Athanasopoulos</span>
+<span class="co">#13   Philippos Karvelas,Ioannis Khrisaphos,Ioannis Mitropoulos,Dimitrios Loundras</span>
+<span class="co">#14                                                              Ioannis Fragoudis</span></code></pre></div>
+<p>(Note: the number of names between examples isn’t an error – the data is not sorted.)</p>
+<p>I haven’t had time to play with this dataset properly, but I wanted to post it while it’s still topical. You can download a zip file with everything I’ve written about in this post here.</p>
+  </div>
+</article>
+
+      </div>
+
+      <div id="footer"><a href="http://github.com/andrewhn/andrewhn">view source</a></div>
+
+    </div>
+
+  </body>
+</html>

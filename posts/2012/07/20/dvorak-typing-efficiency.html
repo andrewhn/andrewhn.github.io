@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <title>Andrew Newnham - Dvorak and typing efficiency</title>
+      <link rel="stylesheet" type="text/css" href="../../../../css/fonts.css" />
+      <link rel="stylesheet" type="text/css" href="../../../../css/default.css" />
+
+      <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-75336631-1', 'auto');
+        ga('send', 'pageview');
+      </script>
+
+  </head>
+  <body>
+
+    <header class="site-header" role="banner">
+      <hgroup>
+        <h1 class="site-name">
+          <a href="../../../../" rel="home">Andrew Newnham</a>
+        </h1>
+        <h2 class="site-description">
+          Not very good at taglines
+        </h2>
+      </hgroup>
+
+      <nav id="navigation" class="main-navigation">
+        <ul id="nav" class="nav-list">
+          <li class="nav-item">
+            <a href="../../../../about.html">About</a>
+          </li>
+          <li class="nav-item">
+            <a href="../../../../archive.html">Archive</a>
+          </li>
+          <li class="nav-item">
+            <a href="../../../../other.html">Other</a>
+          </li>
+        </ul>
+      </nav>
+
+    </header>
+
+
+    <div id="main-content">
+
+      <div id="content">
+        
+  
+
+<article class="post">
+  <header class="header">
+    <h1 class="title">
+      Dvorak and typing efficiency
+    </h1>
+  </header>
+
+  <footer class="footer">
+    Posted
+    
+        under computers
+    
+    on July 20, 2012
+    
+  </footer>
+
+  <div class="full-content">
+    <p>After reading some criticisms of the Dvorak keyboard layout, I decided to try and calculate the relative finger distance travelled when using both layouts. The suggestion that using the Sholes (QWERTY) keyboard layout will, in general use cases, require more finger travel doesn't seem to be disputed, but the Wiki article makes it sound so:</p>
+<blockquote>
+<p>Dvorak proponents claim the Dvorak layout uses less finger motion, increases typing rate, and reduces errors compared to the standard QWERTY keyboard.</p>
+</blockquote>
+<!--more-->
+<p>I switched to the Dvorak layout because my hands were starting to hurt after long bouts of typing. For me, the Dvorak downsides are the necessity of switching layouts when using other computers, and the placement of the shortcut keys become inconvenient (particularly ctrl + c and ctrl + v - both of these require two hands to execute). The upsides are that I no longer get sore hands, and my typing speed has increased.</p>
+<p>To calculate relative distances, I used the SVG on the Wikipedia site and measure distance between keys in pixels. SVG files are XML files, so I pulled the key border coordinates with this line of bash:</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">cat</span> svgs/KB_Blank.svg <span class="kw">|</span> <span class="kw">grep</span> <span class="st">&quot;d=</span><span class="dt">\&quot;</span><span class="st">M&quot;</span> <span class="kw">|</span> <span class="kw">grep</span> -v <span class="st">&quot;\.&quot;</span> <span class="kw">|</span> <span class="kw">sed</span> <span class="st">&quot;s/d=</span><span class="dt">\&quot;</span><span class="st">M\s//g&quot;</span> <span class="kw">|</span> <span class="kw">sed</span> <span class="st">&quot;s/,/ /g&quot;</span> <span class="kw">|</span> <span class="kw">sed</span> <span class="st">&quot;s/L\s//g&quot;</span> <span class="kw">|</span> <span class="kw">sed</span> <span class="st">&quot;s/\sz\s</span><span class="dt">\&quot;</span><span class="st">//g&quot;</span></code></pre></div>
+<p>Calculating the distance between keys is then a matter of calculating Euclidean distance between the pixel coordinates of the centre of these boxes. Calculating the relative distance travelled in typing, say, the works of Shakespeare, is largely a matter of calculating the distance between the relevant home key (assuming the typist is using the most common touch-typing pattern) and then multiplying it by two for the return journey.</p>
+<p>The complication comes from using the same finger to type consecutive letters, such as <code>rt</code> on the Sholes layout. Calculating the return distance from <code>r</code> and <code>t</code> overstates the distance, because our fingers naturally move from <code>f</code> to <code>r</code> to <code>t</code> to <code>f</code>, without returning to <code>f</code> in between. A solution is to add the return distance only when another finger is being used, otherwise add the distance from the previous key.</p>
+<p>I didn't include distances for keys that don't change location - shift, enter, space etc. Also, I have used <code>str.lower()</code> on each character, which doesn't change non-alphanumeric characters (e.g. the double quotation mark). Therefore, these aren't included in the distance and will probably cause some bias, but it's hard to say for which layout.</p>
+<p>According to my Python program, typing the entire works of Shakespeare with the Sholes layout requires 1.78 times the finger travel of the Dvorak layout. Typing the most common 1/3 million words with the Sholes layout requires 1.55 times the finger travel of the Dvorak layout.</p>
+<p>Because I have the coordinates of the key boxes in pixels, it's easy to draw heat maps of finger activity on keys with pyCairo. Here's the heat map of the entire works of Shakespeare with the Sholes layout, with lighter colours signifying more activity:</p>
+<p><img src="../../../../images/heatmap_shakespeare_qwerty.png" alt="image" /></p>
+<p>And the respective activity with Dvorak:</p>
+<p><img src="../../../../images/heatmap_shakespeare_dvorak.png" alt="image" /></p>
+<p>I also wrote a very primitive genetic-esque algorithm looking for improvements on a base layout. I'll play with it some more another time but I've included in the zip.</p>
+<p>You can download a zip file or tarball of the project. I got my text files for testing from Peter Norvig's website.</p>
+<p>There's no question using Dvorak requires less finger movement in general use cases. The other benefits of the layout are contestable, but I can say in my case they are generally true.</p>
+  </div>
+</article>
+
+      </div>
+
+      <div id="footer"><a href="http://github.com/andrewhn/andrewhn">view source</a></div>
+
+    </div>
+
+  </body>
+</html>
